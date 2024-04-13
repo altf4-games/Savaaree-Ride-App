@@ -1,0 +1,43 @@
+/* Style for the side panel */
+.side-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px; /* Adjust width as needed */
+    background-color:white ;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Adding shadow for a better look */
+    z-index: 1000; /* Ensure it overlays on top of the map */
+    overflow-y: auto; /* Enable vertical scroll if content exceeds height */
+    padding: 20px; /* Add padding for better spacing */
+    font-family: 'Georgia', serif; /* Apply Roboto font */
+    border-left: 1px solid #ccc; /* Add border between side panel and map */
+    text-align: center; /* Center align the text */
+}
+
+/* Style for the map container */
+#map-container {
+    position: relative;
+    height: 500px;
+    border: 5px solid black; /* Add border around the map container */
+}
+
+/* Style for the navbar */
+.navbar {
+    padding: 10px; /* Adjust padding as needed */
+    border-bottom: 5px solid black; /* Add border between navbar and map */
+    background-color: lightgoldenrodyellow !important; /* Change navbar background color to sky blue */
+    color: #00008b !important; /* Change navbar text color to dark blue */
+}
+
+/* Style for the logo */
+.navbar-brand img {
+    width: 80px; /* Adjust width as needed */
+    height: 80px; /* Adjust height as needed */
+    object-fit: contain; /* Ensure the logo maintains its aspect ratio */
+}
+
+/* Style for the navbar links */
+.navbar-nav .nav-link {
+    font-weight: bold; /* Make the text bold */
+}
