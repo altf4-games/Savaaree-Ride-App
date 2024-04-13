@@ -1,0 +1,22 @@
+{
+  "name": "savaaree-ride-app",
+  "version": "1.0.0",
+  "description": "Submission for KJSCE Devopia.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/altf4-games/Savaaree-Ride-App.git"
+  },
+  "author": "Alt F4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/altf4-games/Savaaree-Ride-App/issues"
+  },
+  "homepage": "https://github.com/altf4-games/Savaaree-Ride-App#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
