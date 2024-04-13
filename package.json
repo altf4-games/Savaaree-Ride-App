@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/altf4-games/Savaaree-Ride-App#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "web3": "^4.7.0"
   }
 }
