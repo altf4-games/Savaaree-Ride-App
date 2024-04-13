@@ -56,6 +56,7 @@ const getLocationCoordinates = async (locationName) => {
 };
 
 let locationName = document.getElementsByClassName("form-control")[0].value;
+let marker;
 
 function Search() {
   locationName = document.getElementsByClassName("form-control")[0].value;
@@ -66,7 +67,8 @@ function Search() {
         `Latitude: ${coordinates.latitude}, Longitude: ${coordinates.longitude}`
       );
       coordinatesD = [coordinates.longitude, coordinates.latitude];
-      new tt.Marker().setLngLat(coordinatesD).addTo(map);
+      if (marker) marker.remove();
+      marker = new tt.Marker().setLngLat(coordinatesD).addTo(map);
       showRoute(coordinatesD);
     } else {
       console.log("Could not find coordinates for the specified location.");
