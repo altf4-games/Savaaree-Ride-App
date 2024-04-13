@@ -1,8 +1,10 @@
 // Initialize the map
+const apiKey = "pCKjhiDCnrgyjAqbqaeEMeJYmenJGWz6";
+
 var map = tt.map({
-  key: "pCKjhiDCnrgyjAqbqaeEMeJYmenJGWz6",
+  key: apiKey,
   container: "map",
-  center: [0, 0], // This will be updated with the user's location
+  center: [0, 0],
   zoom: 10,
 });
 
@@ -25,4 +27,44 @@ if (navigator.geolocation) {
   );
 } else {
   console.error("Geolocation is not supported by this browser.");
+}
+
+const getLocationCoordinates = async (locationName) => {
+  const url = `https://api.tomtom.com/search/2/search/${encodeURIComponent(
+    locationName
+  )}.json?key=${apiKey}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const { position } = data.results[0];
+      const { lat, lon } = position;
+      return { latitude: lat, longitude: lon };
+    } else {
+      throw new Error("Location not found");
+    }
+  } catch (error) {
+    console.error("Error fetching location coordinates:", error);
+    return null;
+  }
+};
+
+let locationName = document.getElementsByClassName("form-control")[0].value;
+
+function Search() {
+  locationName = document.getElementsByClassName("form-control")[0].value;
+  console.log(locationName);
+  getLocationCoordinates(locationName).then((coordinates) => {
+    if (coordinates) {
+      console.log(
+        `Latitude: ${coordinates.latitude}, Longitude: ${coordinates.longitude}`
+      );
+      var coordinatesM = [coordinates.longitude, coordinates.latitude];
+      new tt.Marker().setLngLat(coordinatesM).addTo(map);
+    } else {
+      console.log("Could not find coordinates for the specified location.");
+    }
+  });
 }
