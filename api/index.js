@@ -1,19 +1,26 @@
 const express = require("express");
-// const { Web3 } = require("web3");
-// const RideHailingSystemABI = require("../RideHandlingSystemABI.json");
 
 const app = express();
+
+app.use(express.json());
+app.use(express.static("public"));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+///  WEB3 ///
+
+// const { Web3 } = require("web3");
+// const RideHailingSystemABI = require("../RideHandlingSystemABI.json");
 // const web3 = new Web3("http://localhost:8545"); // Replace with your Ethereum node URL
 // const contractAddress = "0x123456789..."; // Replace with the deployed contract address
 // const rideHailingSystemContract = new web3.eth.Contract(
 //   RideHailingSystemABI,
 //   contractAddress
 // );
-
-app.use(express.json());
-app.use(express.static("public"));
-
-// Request a ride
+// // Request a ride
 // app.post("/ride/request", async (req, res) => {
 //   const { rider } = req.body;
 //   try {
@@ -68,8 +75,3 @@ app.use(express.static("public"));
 //     res.status(500).json({ error: error.message });
 //   }
 // });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});

@@ -14,10 +14,8 @@ let coordinatesS;
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     function (position) {
-
       var userLocation = [position.coords.longitude, position.coords.latitude];
       map.setCenter(userLocation);
-
 
       new tt.Marker().setLngLat(userLocation).addTo(map);
       coordinatesS = [position.coords.longitude, position.coords.latitude];
@@ -203,9 +201,16 @@ function showRoute(coordinatesD) {
       if (response.routes && response.routes[0] && response.routes[0].summary) {
         const distanceInMeters = response.routes[0].summary.lengthInMeters;
         const distanceInKilometers = distanceInMeters / 1000;
+        document.getElementsByClassName("details")[0].innerHTML =
+          `Distance: ${distanceInKilometers.toFixed(2)} km` +
+          `<br>` +
+          `Time: ${response.routes[0].summary.travelTimeInSeconds} s`;
         console.log(`Distance: ${distanceInKilometers.toFixed(2)} km`);
+        console.log(
+          `Time: ${response.routes[0].summary.travelTimeInSeconds} s`
+        );
       } else {
-        console.log('Could not calculate distance.');
+        console.log("Could not calculate distance.");
       }
     });
 }
