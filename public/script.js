@@ -11,15 +11,14 @@ var map = tt.map({
 let coordinatesD;
 let coordinatesS;
 
-// Get the user's location
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     function (position) {
-      // Update the map's center to the user's location
+
       var userLocation = [position.coords.longitude, position.coords.latitude];
       map.setCenter(userLocation);
 
-      // Add a marker at the user's location
+
       new tt.Marker().setLngLat(userLocation).addTo(map);
       coordinatesS = [position.coords.longitude, position.coords.latitude];
     },
@@ -159,5 +158,54 @@ function showRoute(coordinatesD) {
         bounds.extend(tt.LngLat.convert(point));
       });
       map.fitBounds(bounds, { duration: 0, padding: 50 });
+    });
+}
+function showRoute(coordinatesD) {
+  if (!coordinatesS || !coordinatesD) {
+    console.error("Coordinates not available.");
+    return;
+  }
+
+  let loc = `${coordinatesS[0]},${coordinatesS[1]}:${coordinatesD[0]},${coordinatesD[1]}`;
+  console.log(loc);
+  tt.services
+    .calculateRoute({
+      key: apiKey,
+      traffic: false,
+      locations: loc,
+    })
+    .then(function (response) {
+      var geojson = response.toGeoJson();
+      map.addLayer(
+        {
+          id: "route",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: geojson,
+          },
+          paint: {
+            "line-color": "#4a90e2",
+            "line-width": 8,
+          },
+        },
+        findFirstBuildingLayerId()
+      );
+
+      addMarkers(geojson.features[0]);
+
+      var bounds = new tt.LngLatBounds();
+      geojson.features[0].geometry.coordinates.forEach(function (point) {
+        bounds.extend(tt.LngLat.convert(point));
+      });
+      map.fitBounds(bounds, { duration: 0, padding: 50 });
+
+      if (response.routes && response.routes[0] && response.routes[0].summary) {
+        const distanceInMeters = response.routes[0].summary.lengthInMeters;
+        const distanceInKilometers = distanceInMeters / 1000;
+        console.log(`Distance: ${distanceInKilometers.toFixed(2)} km`);
+      } else {
+        console.log('Could not calculate distance.');
+      }
     });
 }
