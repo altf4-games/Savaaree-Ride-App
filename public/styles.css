@@ -41,3 +41,8 @@
 .navbar-nav .nav-link {
     font-weight: bold; /* Make the text bold */
 }
+
+#weatherTime {
+    font-family: Arial, sans-serif;
+    text-align: left;
+}

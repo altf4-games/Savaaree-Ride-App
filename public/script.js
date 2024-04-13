@@ -204,13 +204,68 @@ function showRoute(coordinatesD) {
         document.getElementsByClassName("details")[0].innerHTML =
           `Distance: ${distanceInKilometers.toFixed(2)} km` +
           `<br>` +
-          `Time: ${response.routes[0].summary.travelTimeInSeconds} s`;
+          `Time: ${Math.round(
+            response.routes[0].summary.travelTimeInSeconds / 60
+          )} m`;
         console.log(`Distance: ${distanceInKilometers.toFixed(2)} km`);
         console.log(
-          `Time: ${response.routes[0].summary.travelTimeInSeconds} s`
+          `Time: ${response.routes[0].summary.travelTimeInSeconds} m`
         );
       } else {
         console.log("Could not calculate distance.");
       }
     });
 }
+
+function fetchWeather() {
+  fetch(
+    "http://api.weatherapi.com/v1/current.json?key=7d273806546e4e64aed52511242003&q=mumbai&aqi=no"
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      const temperature = data.current.temp_c;
+      const weatherDescription = data.current.condition.text;
+      const weatherInfo = `Weather: ${weatherDescription}, Temperature: ${temperature}°C`;
+      updateTimeAndWeather(weatherInfo);
+    })
+    .catch((error) => console.error("Error fetching weather:", error));
+}
+
+// Function to get current system time
+function getCurrentTime() {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const timeString = `Time: ${hours}:${minutes < 10 ? "0" : ""}${minutes}:${
+    seconds < 10 ? "0" : ""
+  }${seconds}`;
+  return timeString;
+}
+
+// Function to update the display
+function updateTimeAndWeather(weatherInfo) {
+  const weatherTimeDiv = document.getElementById("weatherTime");
+  weatherTimeDiv.innerHTML = "";
+
+  if (weatherInfo) {
+    const weatherPara = document.createElement("p");
+    weatherPara.textContent = weatherInfo;
+    weatherTimeDiv.appendChild(weatherPara);
+  }
+
+  const timeString = getCurrentTime();
+  const timePara = document.createElement("p");
+  timePara.textContent = timeString;
+  weatherTimeDiv.appendChild(timePara);
+}
+
+// Initial fetch
+fetchWeather();
+updateTimeAndWeather();
+
+// Update every minute
+setInterval(() => {
+  fetchWeather();
+  updateTimeAndWeather();
+}, 60000);
