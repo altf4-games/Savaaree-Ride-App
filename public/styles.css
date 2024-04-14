@@ -46,3 +46,15 @@
     font-family: Arial, sans-serif;
     text-align: left;
 }
+
+.icon.tt-icon.-white.-taxi {
+    width: 30px;
+    /* Adjust width as needed */
+    height: 30px;
+    /* Adjust height as needed */
+    background-image: url('assets/car2.png');
+    /* Replace 'path/to/taxi-icon.png' with the actual path to your taxi icon image */
+    background-size: cover;
+    border-radius: 50%;
+    /* Makes the marker round */
+}
