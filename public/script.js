@@ -8,8 +8,8 @@ var map = tt.map({
   zoom: 10,
 });
 
-let coordinatesD;
-let coordinatesS;
+var coordinatesD;
+var coordinatesS;
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
@@ -89,8 +89,8 @@ function createMarkerElement(type) {
 function addMarkers(feature) {
   var startPoint, endPoint;
   if (feature.geometry.type === "MultiLineString") {
-    startPoint = feature.geometry.coordinates[0][0]; //get first point from first line
-    endPoint = feature.geometry.coordinates.slice(-1)[0].slice(-1)[0]; //get last point from last line
+    startPoint = feature.geometry.coordinates[0][0];
+    endPoint = feature.geometry.coordinates.slice(-1)[0].slice(-1)[0];
   } else {
     startPoint = feature.geometry.coordinates[0];
     endPoint = feature.geometry.coordinates.slice(-1)[0];
@@ -158,6 +158,11 @@ function showRoute(coordinatesD) {
       map.fitBounds(bounds, { duration: 0, padding: 50 });
     });
 }
+
+var ethPrice;
+var time;
+var distance;
+
 function showRoute(coordinatesD) {
   if (!coordinatesS || !coordinatesD) {
     console.error("Coordinates not available.");
@@ -201,12 +206,18 @@ function showRoute(coordinatesD) {
       if (response.routes && response.routes[0] && response.routes[0].summary) {
         const distanceInMeters = response.routes[0].summary.lengthInMeters;
         const distanceInKilometers = distanceInMeters / 1000;
-        document.getElementsByClassName("details")[0].innerHTML =
-          `Distance: ${distanceInKilometers.toFixed(2)} km` +
-          `<br>` +
-          `Time: ${Math.round(
-            response.routes[0].summary.travelTimeInSeconds / 60
-          )} m`;
+        const price = distanceInKilometers * 10;
+        time = response.routes[0].summary.travelTimeInSeconds / 60;
+        distance = distanceInKilometers;
+        ethPrice = price / 311777;
+        document.getElementById("total").innerHTML =
+          ethPrice.toFixed(6) + " ETH";
+
+        document.getElementById("distance").innerHTML =
+          distanceInKilometers.toFixed(2) + " km";
+        document.getElementById("time").innerHTML =
+          Math.round(response.routes[0].summary.travelTimeInSeconds / 60) +
+          " m";
         console.log(`Distance: ${distanceInKilometers.toFixed(2)} km`);
         console.log(
           `Time: ${response.routes[0].summary.travelTimeInSeconds} m`
@@ -217,55 +228,59 @@ function showRoute(coordinatesD) {
     });
 }
 
-function fetchWeather() {
-  fetch(
-    "http://api.weatherapi.com/v1/current.json?key=7d273806546e4e64aed52511242003&q=mumbai&aqi=no"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      const temperature = data.current.temp_c;
-      const weatherDescription = data.current.condition.text;
-      const weatherInfo = `Weather: ${weatherDescription}, Temperature: ${temperature}°C`;
-      updateTimeAndWeather(weatherInfo);
-    })
-    .catch((error) => console.error("Error fetching weather:", error));
+const currentAccount = "";
+const accountDiv = document.getElementById("currentAccount");
+const connectWallet = document.getElementById("connectWallet");
+
+if (currentAccount) {
+  accountDiv.textContent = `${currentAccount.slice(
+    0,
+    6
+  )}...${currentAccount.slice(-4)}`;
+  connectWallet.style.display = "none";
+} else {
+  accountDiv.style.display = "none";
+  connectWallet.style.display = "flex";
 }
 
-// Function to get current system time
-function getCurrentTime() {
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const timeString = `Time: ${hours}:${minutes < 10 ? "0" : ""}${minutes}:${
-    seconds < 10 ? "0" : ""
-  }${seconds}`;
-  return timeString;
-}
+var ride = "Go";
+document.addEventListener("DOMContentLoaded", (event) => {
+  const rideOptions = document.querySelectorAll(".ride-option");
 
-// Function to update the display
-function updateTimeAndWeather(weatherInfo) {
-  const weatherTimeDiv = document.getElementById("weatherTime");
-  weatherTimeDiv.innerHTML = "";
+  rideOptions.forEach((option) => {
+    option.addEventListener("click", function () {
+      rideOptions.forEach((opt) => opt.classList.remove("selected"));
+      this.classList.add("selected");
+      ride = this.getAttribute("data-ride");
+      console.log("Selected ride:", ride);
+    });
+  });
+});
 
-  if (weatherInfo) {
-    const weatherPara = document.createElement("p");
-    weatherPara.textContent = weatherInfo;
-    weatherTimeDiv.appendChild(weatherPara);
-  }
+let userAccount = "";
+document.addEventListener("DOMContentLoaded", function () {
+  const connectButton = document.getElementById("connectWallet");
 
-  const timeString = getCurrentTime();
-  const timePara = document.createElement("p");
-  timePara.textContent = timeString;
-  weatherTimeDiv.appendChild(timePara);
-}
+  connectButton.addEventListener("click", async () => {
+    if (typeof window.ethereum !== "undefined") {
+      try {
+        // Request account access if needed
+        const accounts = await ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        userAccount = accounts[0];
+        console.log("Connected", accounts[0]);
 
-// Initial fetch
-fetchWeather();
-updateTimeAndWeather();
-
-// Update every minute
-setInterval(() => {
-  fetchWeather();
-  updateTimeAndWeather();
-}, 60000);
+        // Here you can add code to interact with the user's account
+        // For example, displaying the account address on the page
+        connectButton.innerHTML = `Connected: ${accounts[0]}`;
+      } catch (error) {
+        console.error(error);
+        connectButton.innerHTML = "Error connecting to MetaMask";
+      }
+    } else {
+      console.log("MetaMask is not installed");
+      connectButton.innerHTML = "MetaMask is not installed";
+    }
+  });
+});

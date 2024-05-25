@@ -1,45 +1,73 @@
-/* Style for the side panel */
 .side-panel {
     position: absolute;
     top: 0;
     right: 0;
     height: 100%;
-    width: 300px; /* Adjust width as needed */
+    width: 400px;
     background-color:white ;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Adding shadow for a better look */
-    z-index: 1000; /* Ensure it overlays on top of the map */
-    overflow-y: auto; /* Enable vertical scroll if content exceeds height */
-    padding: 20px; /* Add padding for better spacing */
-    font-family: 'Georgia', serif; /* Apply Roboto font */
-    border-left: 1px solid #ccc; /* Add border between side panel and map */
-    text-align: center; /* Center align the text */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+    border-left: 1px solid #ccc;
+    overflow-y: hidden;
 }
 
-/* Style for the map container */
+.ride-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 2px solid transparent;
+    padding: 2px;
+    cursor: pointer;
+}
+
+
+.ride-option.selected {
+    border-color: blue;
+    background-color: #f0f8ff;
+}
+
+.ride-image {
+    width: 100px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.ride-details h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #555;
+}
+
+.ride-details p {
+    margin: 5px 0;
+    color: #777;
+}
+
 #map-container {
     position: relative;
-    height: 500px;
-    border: 5px solid black; /* Add border around the map container */
+    height: 600px;
+    border: 5px solid black;
 }
 
-/* Style for the navbar */
 .navbar {
-    padding: 10px; /* Adjust padding as needed */
-    border-bottom: 5px solid black; /* Add border between navbar and map */
-    background-color: lightgoldenrodyellow !important; /* Change navbar background color to sky blue */
-    color: #00008b !important; /* Change navbar text color to dark blue */
+    padding: 10px;
+    border-bottom: 5px solid black;
+    background-color: lightgoldenrodyellow !important;
+    color: #00008b !important;
 }
 
 /* Style for the logo */
 .navbar-brand img {
-    width: 80px; /* Adjust width as needed */
-    height: 80px; /* Adjust height as needed */
-    object-fit: contain; /* Ensure the logo maintains its aspect ratio */
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
 }
 
 /* Style for the navbar links */
 .navbar-nav .nav-link {
-    font-weight: bold; /* Make the text bold */
+    font-weight: bold;
 }
 
 #weatherTime {
@@ -47,14 +75,97 @@
     text-align: left;
 }
 
-.icon.tt-icon.-white.-taxi {
-    width: 30px;
-    /* Adjust width as needed */
-    height: 30px;
-    /* Adjust height as needed */
-    background-image: url('assets/car2.png');
-    /* Replace 'path/to/taxi-icon.png' with the actual path to your taxi icon image */
-    background-size: cover;
+.wrapper {
+    height: 4rem;
+    width: 100%;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 0;
+    z-index: 20;
+}
+.leftMenu {
+    display: flex;
+    gap: 0.75rem;
+}
+.logo {
+    font-size: 1.875rem;
+    color: white;
+    display: flex;
+    cursor: pointer;
+    margin-right: 4rem;
+}
+.menuItem {
+    font-size: 1.125rem;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+    cursor: pointer;
+}
+.rightMenu {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+.userImageContainer {
+    margin-right: 0.5rem;
+}
+.userImage {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-right: 1rem;
     border-radius: 50%;
-    /* Makes the marker round */
+    padding: 1px;
+    object-fit: cover;
+    cursor: pointer;
+}
+.loginButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 9999px;
+    padding: 0.25rem 1rem;
+    background-color: #333333;
+}
+.loginText {
+    margin-left: 0.5rem;
+}
+.details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 1em;
+    color: #333;
+}
+
+.details span {
+    font-weight: bold;
+}
+
+#total {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #007bff;
+}
+
+#payButton {
+    display: block;
+    width: 100%;
+    padding: 5x;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+#payButton:hover {
+    background-color: #0056b3;
 }
